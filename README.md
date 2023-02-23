@@ -1,19 +1,26 @@
 ///////////////  HEADER_1  //////////////////////
 #pragma once
 #include <iostream>
+#include <iomanip>
+#include <cmath>
 #include <string>
 #include <vector>
 using namespace std;
 
-struct FIO {
-	string id = "123456";
-	string name = "Abc";
-	string surname = "Defgh";
-	vector<int> vec{ 1,2,3,4,5,6,7,8,9,10 };
-
+struct Student
+{
+    string Name;
+    string Surname;
+    string Patronymic;
+    int Grades[10];
+    string color;
 };
+Student* arr;
 
-FIO input();
+void input_arr();
+void prosmotr_record(int i);
+int search();
+
 ///////////////////////////////////////////////////
 
 
@@ -25,82 +32,159 @@ FIO input();
 #include <iostream>
 #include <iomanip>
 #include <cmath>
-#include "header_1.h"
+#include <string>
+#include <vector>
+#include "Header.h"
 using namespace std;
+
+Student* arr;
+int size = -1;
+
+
+void input_arr()
+{
+    int size = -1;
+    cout << "Enter the size...";
+    cin >> size;
+    if (size < 1) size = 1;
+    arr = new Student[size];
+    for (int i = 0; i < size; i++)
+    {
+        cout << "Number -> " << i + 1 << ": " << endl;
+        cout << "Name ..." << endl;
+        cin >> arr[i].Name;
+        cout << "Surname ..." << endl;
+        cin >> arr[i].Surname;
+        cout << "Patronymic ..." << endl;
+        cin >> arr[i].Patronymic;
+        cout << "Grade list ..." << endl;
+        for (int i = 0; i < 10; i++) {
+            cin >> arr[i].Grades;
+        }
+        cin >> arr[i].color;
+    }
+}
+void prosmotr_record(int i)
+{
+    cout << "Number -> " << i + 1 << ": " << endl;
+    cout << "Name..." << arr[i].Name << endl;
+    cout << "Surname..." << arr[i].Surname << endl;
+    cout << "Patronymic ..." << arr[i].Patronymic << endl;
+    cout << "Grades list..." << arr[i].Grades << endl;
+    cout << endl << endl;
+}
+void prosmotr_record(int i)
+{
+    int size = -1;
+    if (size < 0) cout << "Array is not input!" << endl; else
+        for (int i = 0; i < size; i++) prosmotr_record(i);
+}
+int search()
+{
+    int size = -1;
+    if (size <= 0) cout << "Array is not input!" << endl; else
+    {
+        int menu_s;
+        cout << "Input parameter to search..." << endl;
+        cout << "1 - Name..." << endl;
+        cout << "2 - Surname..." << endl;
+        cout << "3 - Patronymic..." << endl;
+        cout << "4 - Grades" << endl;
+        cin >> menu_s;
+        if (menu_s != 6)
+            cout << "Input example to find..." << endl; else
+            cout << "<= 0 - automatic, >=1 - manual ..." << endl;
+        float obr;
+        string obr_color;
+        if (menu_s <= 6)  cin >> obr;
+        else      cin >> obr_color;
+        int count_s = 0;
+        for (int i = 0; i < size; i++)
+        {
+            int temp[10];
+            int temp1;
+            string temp_color;
+            switch (menu_s)
+            {
+            case 1: {
+                temp_color = arr[i].Name;
+                break; }
+            case 2: {
+                temp_color = arr[i].Surname;
+                break; }
+            case 3: {
+                temp_color = arr[i].Patronymic;
+                break; }
+            case 4: {
+                for (int i = 0; i < 10; i++)
+                {
+                    temp[i] = arr[i].Grades;
+                }
+                break; }
+            case 5: {
+                temp_color = arr[i].color;
+                break; }
+            }
+            if (menu_s <= 6)
+            {
+                if (temp1 == obr) {
+                    prosmotr_record(i);
+                    count_s++;
+                }
+            }
+            else {
+                if (temp_color == obr_color)
+                {
+                    prosmotr_record(i);
+                    count_s++;
+                }
+            }
+        }
+        return count_s;
+    }
+    return 0;
+}
 
 int main()
 {
-	int choice;
-	cout << "\t   MENU\n";
-	cout << "  1. Add student`s data ......  1\n";
-	cout << "  2. Add a grade   ...........  2\n";
-	cout << "  3. Output list  ............  3\n";
-	cout << "  4. Student`s grades  .......  4\n";
-	cout << "  5. Debtor students  ........  5\n";
-	cout << "  6. EXIT ....................  6\n";
-	cout << "-> ";
-	cin >> choice;
-	cout << endl << endl;
-	switch (choice) {
-	case 1: (choice == 1); {
-		FIO student = input();
-		break;
-	};
-	case 2: (choice == 2); {
-
-		break;
-	};
-	case 3: (choice == 3); {
-
-		break;
-	};
-	case 4: (choice == 4); {
-
-		break;
-	};
-	case 5: (choice == 5); {
-
-		break;
-	};
-	case 6: (choice == 6); {
-		
-		break;
-	};
-	}
-
-
+    int size = -1;
+    bool ok = true;
+    short menu = -1;
+    do
+    {
+        cout << "MENU" << endl;
+        cout << "1 - add student;" << endl;
+        cout << "2 - output student`s form;" << endl;
+        cout << "3 - search parameter;" << endl;
+        cout << "any key - exit." << endl;
+        cout << "Press menu key...";
+        cin >> menu;
+        switch (menu)
+        {
+        case 1:
+            input_arr();
+            break;
+        case 2:
+            output_arr();
+            break;
+        case 3:
+        {
+            int count = search();
+            (count == -1) ? cout << "record is not search!" << endl :
+                (size < 0) ? cout << "Error search!" << endl : cout << "record search count: " << count << endl;
+            break;
+        }
+        default:
+            ok = false;
+            break;
+        }
+        if (menu <= 3 && menu >= 1) {
+            string ext;
+            cout << "OK! Press any key!\n\n";
+            cin >> ext;
+        }
+    } while (ok);
+    cout << "DONE!";
+    return 0;
 }
-
-FIO input() {
-	printf("\x1B[36;2m\tStudent`s form\n \033[0m");
-	cout << "-------------------------\n";
-	FIO s;
-	int temp = 0, ave = 0;
-	printf("\x1B[36;1m1. ID: \033[0m");
-	cin >> s.id;
-	printf("\x1B[36;1m2. Name: \033[0m");
-	cin >> s.name;
-	printf("\x1B[36;1m3. Surname: \033[0m");
-	cin >> s.surname;
-	cout << "-------------------------\n";
-	printf("\x1B[36;1m4. Grades list: \033[0m");
-	for (int i = 0; i < s.vec.size(); i++)
-	{
-		cin >> s.vec[i];
-		temp += s.vec[i];
-		ave = temp / 10;
-	}
-	cout << endl;
-	/*for (int i = 0; i < s.vec.size(); i++)
-	{
-		cout << s.vec[i] << '|';
-	} */
-	printf("\x1B[36;1m5. Average: \033[0m");
-	cout << ave << endl;
-	cout << "-------------------------\n";
-	if (ave >= 4)
-		printf("\x1B[32;1mExam is accepted\n\033[0m");
-	else
-		printf("\x1B[31;1mExam is not accepted\n\033[0m");
-	return s;
 }
